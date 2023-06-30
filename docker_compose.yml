@@ -1,0 +1,13 @@
+
+version: "3"
+services:
+  healthcheck:
+    image: "alpine"
+  embeddings-model:
+    container_name: "embeddings-model"
+    image: "embeddings-model:latest"
+    build:
+      context: "embeddings_service"
+      dockerfile: Dockerfile
+    ports:
+     - 7050:8000

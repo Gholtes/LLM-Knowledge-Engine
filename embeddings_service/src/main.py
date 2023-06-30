@@ -25,10 +25,15 @@ APP_PORT = 7000
 async def embeddings_get(request: EmbeddingsGetRequest):
     """
     Returns the embeddings vector for the text input
+
+    test with curl localhost:7005/embeddings/get
     """
     # Response must match spec of the class exampleResponse from ./models.py
+    logger.info(request.text)
+    embeddings = model.get(request.text)
+    logger.info(embeddings)
     resp = {
-        'embeddings': "asdfghjkl"
+        'embeddings': embeddings
     }
     return resp
 
@@ -72,6 +77,10 @@ async def example(request: ExampleRequest):
         'id': 'U123456789'
     }
     return resp
+
+
+def check_ready():
+    return True
 
 if __name__ == "__main__":
     uvicorn.run(app, host=APP_HOST, port=APP_PORT)
