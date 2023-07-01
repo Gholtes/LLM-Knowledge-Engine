@@ -3,7 +3,7 @@ from transformers import AutoTokenizer, AutoModelForMaskedLM
 class EmbeddingsModel:
     def __init__(self):
         self.tokenizer = AutoTokenizer.from_pretrained("xlm-roberta-base")
-        self.model = AutoModelForMaskedLM.from_pretrained("xlm-roberta-base")
+        self.model = AutoModelForMaskedLM.from_pretrained("xlm-roberta-base", from_tf=True)
 
     def get(self, inp):
         encoded_input = self.tokenizer("hello", return_tensors='pt')

@@ -5,4 +5,5 @@ redis
 psycopg2
 pandas==2.0.0
 sqlalchemy
+tensorflow
 transformers[torch]

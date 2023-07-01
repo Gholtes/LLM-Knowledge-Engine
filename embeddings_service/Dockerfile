@@ -11,6 +11,11 @@ RUN apt-get update -y && apt-get install -y gdal-bin libgdal-dev python3-gdal &&
 
 WORKDIR /app
 
-COPY ./src ./
+COPY ./src/xlm-roberta-base ./xlm-roberta-base
+COPY ./src/logging.conf ./logging.conf
+COPY ./src/main.py ./main.py
+COPY ./src/models.py ./models.py
+COPY ./src/embedding_models.py ./embedding_models.py
+
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
