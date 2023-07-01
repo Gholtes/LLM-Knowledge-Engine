@@ -79,7 +79,7 @@ async def example(request: ExampleRequest):
     return resp
 
 
-def check_ready():
+def check_ready(): 
     return True
 
 if __name__ == "__main__":
