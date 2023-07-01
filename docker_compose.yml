@@ -1,8 +1,8 @@
 
 version: "3"
 services:
-  healthcheck:
-    image: "alpine"
+  # healthcheck:
+  #   image: "alpine"
   embeddings-model:
     container_name: "embeddings-model"
     image: "embeddings-model:latest"

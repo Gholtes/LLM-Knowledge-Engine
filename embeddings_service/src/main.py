@@ -4,17 +4,22 @@ import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
 import logging
-
-logger = logging.getLogger("app")
-
 from models import *
-from embeddings_model import EmbeddingsModel
+
+# setup logging
+logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
+# get logger for this file
+logger = logging.getLogger(__name__)
 
 # Start app
 app = FastAPI()
 logger.info("Fast API app initialised")
 
+# Import and start model
+
+from embeddings_model import EmbeddingsModel
 model = EmbeddingsModel()
+logger.info("EmbeddingsModel initialised")
 
 APP_HOST = '0.0.0.0'
 APP_PORT = 7000
@@ -26,11 +31,13 @@ async def embeddings_get(request: EmbeddingsGetRequest):
     """
     Returns the embeddings vector for the text input
 
-    test with curl localhost:7005/embeddings/get
+    test with curl 
+    curl -X POST localhost:7050/embeddings/get -H 'Content-Type: application/json' -d '{"text":"This is a test sentance"}'
     """
     # Response must match spec of the class exampleResponse from ./models.py
     logger.info(request.text)
-    embeddings = model.get(request.text)
+    # embeddings = model.get(request.text)
+    embeddings = 123456789
     logger.info(embeddings)
     resp = {
         'embeddings': embeddings

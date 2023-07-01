@@ -1,0 +1,13 @@
+# Embeddings Service
+
+## Download model
+Prepare:
+```
+brew install git-lfs
+git lfs install
+```
+
+Clone model:
+```
+git clone git@hf.co:xlm-roberta-base
+```
