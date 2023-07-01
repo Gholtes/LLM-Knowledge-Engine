@@ -1,2 +1,1 @@
-embeddings_service/src/xlm-roberta-base/*
-embeddings_service/src/bert-small/*
+embeddings_service/src/all-MiniLM-L6-v2/*

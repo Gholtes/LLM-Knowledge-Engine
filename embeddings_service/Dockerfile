@@ -11,8 +11,7 @@ RUN apt-get update -y && apt-get install -y gdal-bin libgdal-dev python3-gdal &&
 
 WORKDIR /app
 
-# COPY ./src/xlm-roberta-base ./xlm-roberta-base
-COPY ./src/bert-small ./bert-small
+COPY ./src/all-MiniLM-L6-v2 ./all-MiniLM-L6-v2
 # Add code after model for faster builds
 COPY ./src/logging.conf ./logging.conf
 COPY ./src/main.py ./main.py

@@ -44,8 +44,7 @@ async def embeddings_get(request: EmbeddingsGetRequest):
     if request.encode:
         embeddings_str = encode_nparray(embeddings)
     else:
-        embeddings_str = str(list(np.round(embeddings, 2)))
-        logger.info(len(list(embeddings)))
+        embeddings_str = str(list(embeddings))
     resp = {
         'embeddings': str(embeddings_str)
     }

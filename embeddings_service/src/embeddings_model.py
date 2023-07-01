@@ -1,22 +1,25 @@
 import torch
 import numpy as np
-from transformers import AutoTokenizer, AutoModelForMaskedLM
+from sentence_transformers import SentenceTransformer
 
 
 class EmbeddingsModel:
     def __init__(self):
-        self.tokenizer = AutoTokenizer.from_pretrained("bert-small")
-        self.model = AutoModelForMaskedLM.from_pretrained("bert-small")
+        # self.tokenizer = AutoTokenizer.from_pretrained("bert-small")
+        # self.model = AutoModelForMaskedLM.from_pretrained("bert-small")
+        self.model = SentenceTransformer("all-MiniLM-L6-v2")
 
     def get(self, inp: str) -> np.ndarray:
-        return self._text_to_vec(inp)
+        return self._text_to_vec([inp])[0]
    
-    def _text_to_vec(self, text: str) -> np.ndarray:
-        encoded_input = self.tokenizer([text], return_tensors='pt')
-        model_output = self.model(**encoded_input)
-        tensor = self._mean_pooling(model_output, encoded_input['attention_mask'])
-        numpy_array = tensor.detach().numpy()
-        return numpy_array[0]
+    def _text_to_vec(self, texts: [str]) -> np.ndarray:
+        embeddings = self.model.encode(texts)
+
+        # encoded_input = self.tokenizer([text], return_tensors='pt')
+        # model_output = self.model(**encoded_input)
+        # tensor = self._mean_pooling(model_output, encoded_input['attention_mask'])
+        # numpy_array = tensor.detach().numpy()
+        return embeddings
 
     def _mean_pooling(self, model_output, attention_mask):
         token_embeddings = model_output[0] #First element of model_output contains all token embeddings
