@@ -1,0 +1,2 @@
+embeddings_service/src/xlm-roberta-base/*
+embeddings_service/src/bert-small/*

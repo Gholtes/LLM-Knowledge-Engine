@@ -1,13 +1,12 @@
 import os
 import traceback
-import base64
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
 import logging
-import numpy as np
 
 from models import *
+from interface import Interface
 
 # setup logging
 logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
@@ -18,37 +17,26 @@ logger = logging.getLogger(__name__)
 app = FastAPI()
 logger.info("Fast API app initialised")
 
-# Import and start model
-
-from embeddings_model import EmbeddingsModel
-model = EmbeddingsModel()
-logger.info("EmbeddingsModel initialised")
+interface = Interface()
 
 APP_HOST = '0.0.0.0'
 APP_PORT = 7050
 
 #### MAIN ROUTES ####
 
-@app.post("/embeddings/get", response_model=EmbeddingsGetResponse)
+@app.post("/search", response_model=EmbeddingsGetResponse)
 async def embeddings_get(request: EmbeddingsGetRequest):
     """
     Returns the embeddings vector for the text input
 
     test with curl 
-    curl -X POST localhost:7050/embeddings/get -H 'Content-Type: application/json' -d '{"encode":true, "text":"This is a test sentance"}'
+    curl -X POST localhost:7050/embeddings/get -H 'Content-Type: application/json' -d '{"text":"This is a test sentance"}'
     """
     # Response must match spec of the class exampleResponse from ./models.py
-    logger.info(request.text)
-    embeddings = model.get(request.text)
-    logger.info(embeddings)
-    if request.encode:
-        embeddings_str = encode_nparray(embeddings)
-    else:
-        embeddings_str = str(list(np.round(embeddings, 2)))
-        logger.info(len(list(embeddings)))
-    resp = {
-        'embeddings': str(embeddings_str)
-    }
+    resp = {}
+    summary, top_matches = interface.search_and_summerise(request.query)
+    resp["summary"] = summary
+    resp["document_ids"] = top_matches
     return resp
 
 
@@ -95,9 +83,6 @@ async def example(request: ExampleRequest):
 
 def check_ready(): 
     return True
-
-def encode_nparray(arr):
-    return base64.b64encode(arr.astype(np.float16).tobytes())
 
 if __name__ == "__main__":
     uvicorn.run(app, host=APP_HOST, port=APP_PORT)

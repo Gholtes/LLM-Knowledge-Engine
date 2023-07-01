@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 
 class ExampleRequest(BaseModel):
@@ -10,9 +10,9 @@ class ExampleResponse(BaseModel):
     age: int
     id: str
 
-class EmbeddingsGetRequest(BaseModel):
-    text: str
-    encode: bool
+class SearchRequest(BaseModel):
+    query: str
 
-class EmbeddingsGetResponse(BaseModel):
-    embeddings: str
+class SearchResponse(BaseModel):
+    summary: str
+    document_ids: List(str)
