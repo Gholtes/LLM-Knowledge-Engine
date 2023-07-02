@@ -12,7 +12,7 @@ class EmbeddingsModel:
     def get(self, inp: str) -> np.ndarray:
         return self._text_to_vec([inp])[0]
    
-    def _text_to_vec(self, texts: [str]) -> np.ndarray:
+    def _text_to_vec(self, texts: list) -> np.ndarray:
         embeddings = self.model.encode(texts)
 
         # encoded_input = self.tokenizer([text], return_tensors='pt')
