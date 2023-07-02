@@ -16,12 +16,12 @@ services:
      - EMBEDDING_SERVICE_URL=http://host.docker.internal:7050
      - EMBEDDING_DIM=384
      - MILVUS_PORT=19530
-  # Embeddings service
-  embeddings-service:
-    container_name: "embeddings-service"
-    image: "llm-idm-embeddings-service:latest"
+  # Model service
+  model-service:
+    container_name: "model-service"
+    image: "llm-idm-model-service:latest"
     build:
-      context: "embeddings_service"
+      context: "model_service"
       dockerfile: Dockerfile
     ports:
      - 7050:8000

@@ -50,6 +50,27 @@ async def embeddings_get(request: EmbeddingsGetRequest):
     }
     return resp
 
+@app.post("/embeddings/get-batch", response_model=EmbeddingsGetResponse)
+async def embeddings_get_batch(request: EmbeddingsGetRequest):
+    """
+    Returns the embeddings vector for the text input
+
+    test with curl 
+    curl -X POST localhost:7050/embeddings/get-batch -H 'Content-Type: application/json' -d '{"encode":true, "text":"This is a test sentance"}'
+    """
+    # Response must match spec of the class exampleResponse from ./models.py
+    logger.info(request.text)
+    embeddings = model.get(request.text)
+    logger.info(embeddings)
+    if request.encode:
+        embeddings_str = encode_nparray(embeddings)
+    else:
+        embeddings_str = str(list(embeddings))
+    resp = {
+        'embeddings': str(embeddings_str)
+    }
+    return resp
+
 
 #### SYSTEM ROUTES ####
 

@@ -16,3 +16,10 @@ class EmbeddingsGetRequest(BaseModel):
 
 class EmbeddingsGetResponse(BaseModel):
     embeddings: str
+
+class EmbeddingsGetBatchRequest(BaseModel):
+    text: list
+    encode: bool
+
+class EmbeddingsGetBatchResponse(BaseModel):
+    embeddings: list

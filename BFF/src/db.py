@@ -37,6 +37,7 @@ class MilvusInterface:
         self.documents = Collection("documents", schema, consistency_level="Strong")
         logger.info(fmt.format("Making L2 index for `documents`"))
         self.make_index()
+        self.needs_load = True
 
     def insert(self, source_paths: list, text_preview: list, embeddings: list):
         text_preview = [t[:300] for t in text_preview]
@@ -46,7 +47,7 @@ class MilvusInterface:
             embeddings
         ]
         insert_result = self.documents.insert(entities)
-        logger.info(f"Number of entities in Milvus: {self.documents.num_entities}")
+        self.needs_load = True
 
     def insert_bulk(self, source_paths: list, embeddings: list):
         entities = [
@@ -65,8 +66,10 @@ class MilvusInterface:
         logger.info(f"Number of entities in Milvus: {self.documents.num_entities}")
         
     def query(self, embedding, limit=10):
-        # prepare for querying by loading into memory
-        self.documents.load()
+        if self.needs_load:
+            # prepare for querying by loading into memory
+            self.documents.load()
+            self.needs_load = False
 
         search_params = {
             "metric_type": "L2",
