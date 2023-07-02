@@ -24,13 +24,13 @@ APP_PORT = 7050
 
 #### MAIN ROUTES ####
 
-@app.post("/search", response_model=EmbeddingsGetResponse)
-async def embeddings_get(request: EmbeddingsGetRequest):
+@app.post("/search", response_model=SearchResponse)
+async def search(request: SearchRequest):
     """
     Returns the embeddings vector for the text input
 
     test with curl 
-    curl -X POST localhost:7050/embeddings/get -H 'Content-Type: application/json' -d '{"text":"This is a test sentance"}'
+    curl -X POST localhost:7051/search -H 'Content-Type: application/json' -d '{"query":"This is a test sentance as well"}'
     """
     # Response must match spec of the class exampleResponse from ./models.py
     resp = {}
@@ -39,6 +39,19 @@ async def embeddings_get(request: EmbeddingsGetRequest):
     resp["document_ids"] = top_matches
     return resp
 
+@app.post("/enrol", response_model=EnrolResponse)
+async def search(request: EnrolRequest):
+    """
+    Returns the embeddings vector for the text input
+
+    test with curl 
+    curl -X POST localhost:7051/enrol -H 'Content-Type: application/json' -d '{"text":"This is a test sentance", "source":"test"}'
+    """
+    # Response must match spec of the class exampleResponse from ./models.py
+    resp = {}
+    status = interface.enrol_document(request.text, request.source)
+    resp["status"] = "SUCCESS"
+    return resp
 
 #### SYSTEM ROUTES ####
 
@@ -57,28 +70,6 @@ async def ready():
     if not check_ready():
         raise HTTPException(status_code=503, detail="Service not ready")
     return "READY"
-
-
-@app.post("/examples/typed-reponse-demo", response_model=ExampleResponse)
-async def example(request: ExampleRequest):
-    """Example of a typed post endpoint. See ./models.py for the definitions of the input and output types
-
-    test with: 
-        curl -d '{"age":23, "name":"myUser"}' -H "Content-Type: application/json" -X POST http://localhost:7003/examples/typed-reponse-demo
-
-    Args:
-        ExampleRequest (exampleRequest): a users age and name
-
-    Returns:
-        ExampleResponse (exampleResponse): a users age and name and isvalid flag
-    """
-    # Response must match spec of the class exampleResponse from ./models.py
-    resp = {
-        'age': request.age,
-        'name': request.name,
-        'id': 'U123456789'
-    }
-    return resp
 
 
 def check_ready(): 

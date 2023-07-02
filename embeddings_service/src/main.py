@@ -96,7 +96,7 @@ def check_ready():
     return True
 
 def encode_nparray(arr):
-    return base64.b64encode(arr.astype(np.float16).tobytes())
+    return base64.b64encode(arr.astype(np.float16).tobytes()).decode('ascii')
 
 if __name__ == "__main__":
     uvicorn.run(app, host=APP_HOST, port=APP_PORT)

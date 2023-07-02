@@ -15,4 +15,11 @@ class SearchRequest(BaseModel):
 
 class SearchResponse(BaseModel):
     summary: str
-    document_ids: List(str)
+    document_ids: list
+
+class EnrolRequest(BaseModel):
+    text: str
+    source: str
+
+class EnrolResponse(BaseModel):
+    status: str
