@@ -38,37 +38,39 @@ async def embeddings_get(request: EmbeddingsGetRequest):
     curl -X POST localhost:7050/embeddings/get -H 'Content-Type: application/json' -d '{"encode":true, "text":"This is a test sentance"}'
     """
     # Response must match spec of the class exampleResponse from ./models.py
-    logger.info(request.text)
     embeddings = model.get(request.text)
-    logger.info(embeddings)
     if request.encode:
         embeddings_str = encode_nparray(embeddings)
     else:
-        embeddings_str = str(list(embeddings))
+        embeddings_str = list(embeddings)
     resp = {
-        'embeddings': str(embeddings_str)
+        'embeddings': embeddings_str
     }
     return resp
 
-@app.post("/embeddings/get-batch", response_model=EmbeddingsGetResponse)
-async def embeddings_get_batch(request: EmbeddingsGetRequest):
+@app.post("/embeddings/get-batch", response_model=EmbeddingsGetBatchResponse)
+async def embeddings_get_batch(request: EmbeddingsGetBatchRequest):
     """
     Returns the embeddings vector for the text input
 
     test with curl 
-    curl -X POST localhost:7050/embeddings/get-batch -H 'Content-Type: application/json' -d '{"encode":true, "text":"This is a test sentance"}'
+    curl -X POST localhost:7050/embeddings/get-batch -H 'Content-Type: application/json' -d '{"encode":false, "texts":["This is a test sentance","this is also a test sentance"]}'
     """
     # Response must match spec of the class exampleResponse from ./models.py
-    logger.info(request.text)
-    embeddings = model.get(request.text)
-    logger.info(embeddings)
-    if request.encode:
-        embeddings_str = encode_nparray(embeddings)
-    else:
-        embeddings_str = str(list(embeddings))
+    embeddings = model.get_batch(request.texts)
     resp = {
-        'embeddings': str(embeddings_str)
+        'embeddings': []
     }
+    if request.encode:
+        for embedding in embeddings:
+            embeddings_str = encode_nparray(embeddings)
+            resp['embeddings'].append(embeddings_str)
+    else:
+        for embedding in embeddings:
+            embeddings_list = list(embeddings)
+            resp['embeddings'].append(embeddings_list)
+        
+    
     return resp
 
 
