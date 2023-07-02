@@ -40,7 +40,7 @@ async def search(request: SearchRequest):
     return resp
 
 @app.post("/enrol", response_model=EnrolResponse)
-async def search(request: EnrolRequest):
+async def enrol(request: EnrolRequest):
     """
     Returns the embeddings vector for the text input
 
