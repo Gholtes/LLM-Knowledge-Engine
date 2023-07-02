@@ -38,11 +38,11 @@ async def embeddings_get(request: EmbeddingsGetRequest):
     curl -X POST localhost:7050/embeddings/get -H 'Content-Type: application/json' -d '{"encode":true, "text":"This is a test sentance"}'
     """
     # Response must match spec of the class exampleResponse from ./models.py
-    embeddings = model.get(request.text)
+    embedding = model.get(request.text)
     if request.encode:
-        embeddings_str = encode_nparray(embeddings)
+        embeddings_str = encode_nparray(embedding)
     else:
-        embeddings_str = list(embeddings)
+        embeddings_str = embedding.tolist()
     resp = {
         'embeddings': embeddings_str
     }
@@ -63,14 +63,12 @@ async def embeddings_get_batch(request: EmbeddingsGetBatchRequest):
     }
     if request.encode:
         for embedding in embeddings:
-            embeddings_str = encode_nparray(embeddings)
+            embeddings_str = encode_nparray(embedding)
             resp['embeddings'].append(embeddings_str)
     else:
         for embedding in embeddings:
-            embeddings_list = list(embeddings)
-            resp['embeddings'].append(embeddings_list)
-        
-    
+            resp['embeddings'].append(embedding.tolist())
+    logger.info(resp)
     return resp
 
 
