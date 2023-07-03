@@ -1,2 +1,3 @@
 embeddings_service/src/all-MiniLM-L6-v2/*
+model_service/src/bart-large-cnn/*
 volumes/*

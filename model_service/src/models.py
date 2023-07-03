@@ -23,3 +23,11 @@ class EmbeddingsGetBatchRequest(BaseModel):
 
 class EmbeddingsGetBatchResponse(BaseModel):
     embeddings: list
+
+class SummarisationRequest(BaseModel):
+    context: str
+    min_length: int
+    max_length: int
+
+class SummarisationResponse(BaseModel):
+    summary: str
