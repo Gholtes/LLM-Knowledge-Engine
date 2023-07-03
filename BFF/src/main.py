@@ -30,7 +30,7 @@ async def search(request: SearchRequest):
     Returns the embeddings vector for the text input
 
     test with curl 
-    curl -X POST localhost:7051/search -H 'Content-Type: application/json' -d '{"query":"This is a test sentance as well"}'
+    curl -X POST localhost:7051/search -H 'Content-Type: application/json' -d '{"query":"What is some useful information abour rainforests?"}'
     """
     # Response must match spec of the class exampleResponse from ./models.py
     resp = {}
@@ -45,7 +45,7 @@ async def enrol(request: EnrolRequest):
     Returns the embeddings vector for the text input
 
     test with curl 
-    curl -X POST localhost:7051/enrol -H 'Content-Type: application/json' -d '{"text":"Deserts cover more than one-fifth of the Earth's land area, and they are found on every continent. A place that receives less than 10 inches (25 centimeters) of rain per year is considered a desert. Deserts are part of a wider class of regions called drylands. These areas exist under a moisture deficit, which means they can frequently lose more moisture through evaporation than they recieve as rain", "source":"www.globalwitness.org"}'
+    curl -X POST localhost:7051/enrol -H 'Content-Type: application/json' -d '{"text":"Rainforests are also home to an estimated  50 million people - with more than a billion people depending on them for their livelihoods. Expert knowledge of plants and their properties, of the seasons, and of animal interactions, means local people are the best custodians of tropical forest.  In fact, forest that is managed by Indigenous peoples and local communities has lower deforestation rates than forest that is managed by governments. Recognition of Indigenous land rights and formalization of land ownership is one of the best ways to secure the future of the world’s rainforests.", "source":"www.globalwitness.org"}'
     """
     # Response must match spec of the class exampleResponse from ./models.py
     resp = {}
