@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 class Interface:
     def __init__(self):
-        self.embedding_service_url = os.getenv("EMBEDDING_SERVICE_URL")
+        self.model_service_url = os.getenv("MODEL_SERVICE_URL")
         self.vector_db = MilvusInterface()
 
     def search_and_summerise(self, query):
@@ -20,11 +20,18 @@ class Interface:
         embeddings = self.get_embeddings(query)
         # Get K-nearest documents from vector db
         results = self.vector_db.query(embeddings)
-        logger.info(results)
-        return "qwertyuiop", results
+        # Summerise results
+        concat_results = "; ".join([r["text_preview"] for r in results])
+        logger.info(concat_results)
+        summary = self.get_summary(concat_results)
+        logger.info(summary)
+        return summary, results
     
     def get_embeddings(self, text):
         return self._get_embeddings(text)
+    
+    def get_summary(self, text):
+        return self._get_summary(text)
 
     def enrol_document(self, text, source_path):
         st = time.time()
@@ -41,11 +48,19 @@ class Interface:
     
     def _get_embeddings(self, text):
         endpoint = "/embeddings/get"
-        url = self.embedding_service_url + endpoint
+        url = self.model_service_url + endpoint
         payload = {"encode":True, "text":text}
         resp = self._make_post_request(url, payload)
-        embeddings = self._decode_b64_numpy(resp["embeddings"])
+        embeddings = self._decode_b64_numpy(resp["embeddings_string"])
         return embeddings
+    
+    def _get_summary(self, text):
+        endpoint = "/summarisation/get"
+        url = self.model_service_url + endpoint
+        payload = {"context":text, "max_length":250, "min_length":85}
+        resp = self._make_post_request(url, payload)
+        summary = resp["summary"]
+        return summary
     
     def _make_post_request(self, url, payload):
         headers = {'Content-Type': 'application/json'}

@@ -13,7 +13,7 @@ services:
     ports:
      - 7051:8000
     environment:
-     - EMBEDDING_SERVICE_URL=http://host.docker.internal:7050
+     - MODEL_SERVICE_URL=http://host.docker.internal:7050
      - EMBEDDING_DIM=384
      - MILVUS_PORT=19530
   # Model service

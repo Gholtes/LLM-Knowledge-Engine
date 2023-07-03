@@ -45,7 +45,7 @@ async def enrol(request: EnrolRequest):
     Returns the embeddings vector for the text input
 
     test with curl 
-    curl -X POST localhost:7051/enrol -H 'Content-Type: application/json' -d '{"text":"This is a test sentance", "source":"test"}'
+    curl -X POST localhost:7051/enrol -H 'Content-Type: application/json' -d '{"text":"Deserts cover more than one-fifth of the Earth's land area, and they are found on every continent. A place that receives less than 10 inches (25 centimeters) of rain per year is considered a desert. Deserts are part of a wider class of regions called drylands. These areas exist under a moisture deficit, which means they can frequently lose more moisture through evaporation than they recieve as rain", "source":"www.globalwitness.org"}'
     """
     # Response must match spec of the class exampleResponse from ./models.py
     resp = {}

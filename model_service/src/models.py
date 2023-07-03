@@ -15,7 +15,8 @@ class EmbeddingsGetRequest(BaseModel):
     encode: bool
 
 class EmbeddingsGetResponse(BaseModel):
-    embeddings: list
+    embeddings_list: list
+    embeddings_string: str
 
 class EmbeddingsGetBatchRequest(BaseModel):
     texts: list

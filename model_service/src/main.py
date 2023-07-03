@@ -43,13 +43,17 @@ async def embeddings_get(request: EmbeddingsGetRequest):
     """
     # Response must match spec of the class exampleResponse from ./models.py
     embedding = embeddings_model.get(request.text)
+    resp = {
+        'embeddings_list': [],
+        'embeddings_string': ""
+    }
     if request.encode:
         embeddings_str = encode_nparray(embedding)
+        resp['embeddings_string'] = embeddings_str
     else:
-        embeddings_str = embedding.tolist()
-    resp = {
-        'embeddings': embeddings_str
-    }
+        embeddings_list = embedding.tolist()
+        resp['embeddings_list'] = embeddings_list
+    
     return resp
 
 @app.post("/embeddings/get-batch", response_model=EmbeddingsGetBatchResponse)
